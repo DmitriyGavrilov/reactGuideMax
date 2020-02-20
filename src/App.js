@@ -3,7 +3,6 @@ import React, { Component } from 'react';
 import './App.css';
 // import { render } from '@testing-library/react';
 import Person from './Person/Person';
-import Radium, { StyleRoot } from 'radium';
 
 /*
 const app = props => {
@@ -99,11 +98,7 @@ class App extends Component {
       border: '1px solid #ccc',
       padding: '8px',
       cursor: 'pointer',
-      transition: '1s',
-      ':hover': {
-        backgroundColor: 'lightgreen',
-        color: 'black'
-      }
+      transition: '1s'
     };
 
     let persons = null;
@@ -122,10 +117,6 @@ class App extends Component {
         </div>
       );
       styleForBtn.backgroundColor = 'red';
-      styleForBtn[':hover'] = {
-        backgroundColor: 'salmon',
-        color: 'black'
-      }
     };
 
     let classes = [];
@@ -137,17 +128,15 @@ class App extends Component {
     }
 
     return (
-      <StyleRoot>
       <div className="App">
         <h1>Hi, I'm a React App</h1>
         <p className={classes.join(' ')}>This is really working!</p>
         <button style={styleForBtn} onClick={this.togglePersonHandler}>Toggle Persons</button>
         {persons}
       </div>
-      </StyleRoot>
     );
     // return React.createElement('div', {className: 'App'}, React.createElement('h1', null, 'Does this work now?'));
   }
 }
 
-export default Radium(App);
+export default App;
