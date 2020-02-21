@@ -1,5 +1,5 @@
 import React from 'react';
-import './Person.css';
+import classes from './Person.module.css';
 // import styled from 'styled-components';
 
 // const StyledDiv = styled.div`width: 60%;
@@ -10,8 +10,13 @@ import './Person.css';
 // text-align: center;`
 
 const person = ({ name, age, children, click, changed }) => {
+    const rnd = Math.random();
+    if ( rnd > 0.7) {
+        throw new Error( 'Something went wrong' );
+    }
     return (
-        <div className='Person'>
+    
+        <div className={classes.Person}>
         {/* // <StyledDiv> */}
             <p onClick={click}>I'm { name } and I am { age } years old!</p>
             {children}

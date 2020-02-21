@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 // import React, { useState } from 'react';
-import './App.css';
+import classes from './App.module.css';
 // import { render } from '@testing-library/react';
 import Person from './Person/Person';
+import ErrorBoundary from './ErrorBoundary/ErrorBoundary';
 
 /*
 const app = props => {
@@ -90,48 +91,38 @@ class App extends Component {
   };
 
   render() {
-
-    const styleForBtn = {
-      backgroundColor: 'green',
-      color: 'white',
-      font: 'inherit',
-      border: '1px solid #ccc',
-      padding: '8px',
-      cursor: 'pointer',
-      transition: '1s'
-    };
-
     let persons = null;
+    let btnClass = '';
 
     if (this.state.showPersons) {
       persons = (
         <div>
           {this.state.persons.map((person, index) => {
-            return <Person
+            return <ErrorBoundary key={person.id}><Person
             key={person.id}
             click={() => this.deletePersonHandler(index)}
             name={person.name} 
             age={person.age}
-            changed={(event) => this.nameChangedHandler(event, person.id)} />;
+            changed={(event) => this.nameChangedHandler(event, person.id)} /></ErrorBoundary>;
           })}
         </div>
       );
-      styleForBtn.backgroundColor = 'red';
+      btnClass = classes.Red;
     };
 
-    let classes = [];
+    let classesArr = [];
     if (this.state.persons.length <= 2) {
-      classes.push('red');
+      classesArr.push(classes.red);
     }
     if (this.state.persons.length <= 1) {
-      classes.push('bold');
+      classesArr.push(classes.bold);
     }
 
     return (
-      <div className="App">
+      <div className={classes.App}>
         <h1>Hi, I'm a React App</h1>
-        <p className={classes.join(' ')}>This is really working!</p>
-        <button style={styleForBtn} onClick={this.togglePersonHandler}>Toggle Persons</button>
+        <p className={classesArr.join(' ')}>This is really working!</p>
+        <button className={btnClass} onClick={this.togglePersonHandler}>Toggle Persons</button>
         {persons}
       </div>
     );
