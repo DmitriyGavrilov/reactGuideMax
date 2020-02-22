@@ -2,8 +2,9 @@ import React, { Component } from 'react';
 // import React, { useState } from 'react';
 import classes from './App.module.css';
 // import { render } from '@testing-library/react';
-import Person from './Person/Person';
-import ErrorBoundary from './ErrorBoundary/ErrorBoundary';
+import Persons from '../components/Persons/Persons';
+// import ErrorBoundary from './ErrorBoundary/ErrorBoundary';
+import Cockpit from '../components/Cockpit/Cockpit';
 
 /*
 const app = props => {
@@ -45,6 +46,11 @@ const app = props => {
 };
 */
 class App extends Component {
+  constructor(props) {
+    super(props)
+    console.log('[App.js constructor]');
+    // this.state = {};
+  }
   state = {
     persons: [
       { id: 'asfa1', name: 'Max', age: 28 },
@@ -54,6 +60,28 @@ class App extends Component {
     otherState: 'some other value',
     showPersons: false
   };
+
+  static getDerivedStateFromProps(props, state) {
+    console.log('[App.js getDerivedStateFromProps]', props);
+    return state;
+  }
+
+  // componentWillMount() {
+  //   console.log('[App.js] componentWillMount()');
+  // }
+
+  componentDidMount() {
+    console.log('[App.js] componentDidMount()');
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    console.log('[App.js] shouldComponentUpdate');
+    return true;
+  }
+
+  componentDidUpdate() {
+    console.log('[App.js] componentDidUpdate');
+  }
 
   nameChangedHandler = (event, id) => {
     const personIndex = this.state.persons.findIndex(p => {
@@ -91,38 +119,23 @@ class App extends Component {
   };
 
   render() {
+    console.log('[App.js] render()');
     let persons = null;
-    let btnClass = '';
 
     if (this.state.showPersons) {
-      persons = (
-        <div>
-          {this.state.persons.map((person, index) => {
-            return <ErrorBoundary key={person.id}><Person
-            key={person.id}
-            click={() => this.deletePersonHandler(index)}
-            name={person.name} 
-            age={person.age}
-            changed={(event) => this.nameChangedHandler(event, person.id)} /></ErrorBoundary>;
-          })}
-        </div>
-      );
-      btnClass = classes.Red;
+      persons = <Persons 
+            persons={this.state.persons} 
+            clicked={this.deletePersonHandler} 
+            changed={this.nameChangedHandler} />;
     };
-
-    let classesArr = [];
-    if (this.state.persons.length <= 2) {
-      classesArr.push(classes.red);
-    }
-    if (this.state.persons.length <= 1) {
-      classesArr.push(classes.bold);
-    }
 
     return (
       <div className={classes.App}>
-        <h1>Hi, I'm a React App</h1>
-        <p className={classesArr.join(' ')}>This is really working!</p>
-        <button className={btnClass} onClick={this.togglePersonHandler}>Toggle Persons</button>
+        <Cockpit
+          title={this.props.appTitle}
+          showPersons={this.state.showPersons}
+          persons={this.state.persons}
+          toggle={this.togglePersonHandler} />
         {persons}
       </div>
     );
