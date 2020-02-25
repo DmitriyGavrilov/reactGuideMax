@@ -5,7 +5,8 @@ import classes from './App.module.css';
 import Persons from '../components/Persons/Persons';
 // import ErrorBoundary from './ErrorBoundary/ErrorBoundary';
 import Cockpit from '../components/Cockpit/Cockpit';
-
+import WithClass from '../hoc/WithClass';
+import withClassFunc from '../hoc/withClassFunc';
 /*
 const app = props => {
 
@@ -58,7 +59,9 @@ class App extends Component {
       { id: 'asdf1', name: 'Stephanie', age: 26 }
     ],
     otherState: 'some other value',
-    showPersons: false
+    showPersons: false,
+    showCockpit: true,
+    changeCounter: 0
   };
 
   static getDerivedStateFromProps(props, state) {
@@ -99,8 +102,11 @@ class App extends Component {
     const persons = [...this.state.persons];
     persons[personIndex] = person;
 
-    this.setState({
-      persons: persons
+    this.setState((prevState, props) => {
+      return {
+        persons: persons,
+        changeCounter: prevState.changeCounter++
+      };
     });
   };
 
@@ -130,17 +136,20 @@ class App extends Component {
     };
 
     return (
-      <div className={classes.App}>
-        <Cockpit
+      <WithClass classes={classes.App}>
+        <button onClick={() => {
+          this.setState({ showCockpit: !this.state.showCockpit })
+        }}>Toggle Cockpit</button>
+        {this.state.showCockpit ? <Cockpit
           title={this.props.appTitle}
           showPersons={this.state.showPersons}
-          persons={this.state.persons}
-          toggle={this.togglePersonHandler} />
+          personsLength={this.state.persons.length}
+          toggle={this.togglePersonHandler} /> : null}
         {persons}
-      </div>
+      </WithClass>
     );
     // return React.createElement('div', {className: 'App'}, React.createElement('h1', null, 'Does this work now?'));
   }
 }
 
-export default App;
+export default withClassFunc(App, classes.App);
